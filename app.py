@@ -83,8 +83,6 @@ TARGET_SR = 16000
 
 # Available models
 AVAILABLE_MODELS = {
-    "mobilenetv2": "mobilenetv2.keras",
-    "baseline_cnn": "baseline_cnn.keras",
     "resnet50_v3": "resnet50_v3.keras",
 }
 

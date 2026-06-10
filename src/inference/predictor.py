@@ -14,6 +14,12 @@ import librosa
 import soundfile as sf
 import tensorflow as tf
 from pathlib import Path
+import os
+
+# ── Optimizing Memory & Threading for Streamlit Cloud (1GB RAM Limit) ─────────
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # Suppress info/warnings
+tf.config.threading.set_intra_op_parallelism_threads(1)
+tf.config.threading.set_inter_op_parallelism_threads(1)
 
 # ── Mel spectrogram config (must match training preset "for-2sec") ─────────────
 MEL_CFG = dict(
@@ -138,7 +144,8 @@ class AudioPredictor:
         self.model_key  = model_key
         self.arch       = MODEL_ARCH.get(model_key, "resnet50")
         self.threshold  = MODEL_THRESHOLDS.get(model_key, 0.5)
-        self.model      = tf.keras.models.load_model(model_path)
+        # compile=False drops optimizer states, saving ~50% RAM!
+        self.model      = tf.keras.models.load_model(model_path, compile=False)
 
     def predict_from_audio(self, audio: np.ndarray, sr: int) -> dict:
         """
