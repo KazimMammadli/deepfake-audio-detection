@@ -1,0 +1,8 @@
+*.keras filter=lfs diff=lfs merge=lfs -text
+*.h5 filter=lfs diff=lfs merge=lfs -text
+
+# GitHub Linguist overrides: Treat notebooks as documentation so Python is primary language
+*.ipynb linguist-detectable=false
+*.ipynb linguist-documentation=true
+notebooks/** linguist-documentation=true
+
